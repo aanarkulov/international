@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ one_news.title }}{% endblock %}
+
+{% block content %}
+    {% include 'include/slider.html' %}
+    <section class="content_block">
+        <div class="uk-container uk-container-expand">
+            <div class="uk-grid" uk-grid="">
+                <div class="uk-width-1-5@l left-side">
+                    {% include 'include/object-navbar.html' %}
+                    {% url 'webapp:calendar' as calendar_url %}
+                    <h5 class="title-bg"><a class="link-to-calendar" href="{% url 'webapp:calendar' %}">ACADEMIC
+                        CALENDAR</a></h5>
+                    <div class="uk-margin">
+                        <div class="eventCalendar" style="width: 100%; margin: 0px auto;"></div>
+                    </div>
+                </div>
+                <div class="uk-width-expand@l border-l-box">
+                    <div class="uk-padding uk-padding-remove-top">
+                        <h1 class="uk-text-center">{{ one_news.title }}</h1>
+                        {{ one_news.description|safe }}
+                        {% if one_news.file %}
+                            <a href="{{ one_news.file.url }}">{{ one_news.file }}</a>
+                        {% endif %}
+                        <br><br><br>
+                        <img src="{{ one_news.image.url }}" alt="">
+                    </div>
+                </div>
+                <div class="uk-width-1-5@l border-l-box-padding-remove">
+                    {% include 'include/last-news.html' %}
+                    {% include 'include/our-partners.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script>
+        var EventCalendar = $('.eventCalendar');
+
+        if (EventCalendar.length) {
+            EventCalendar.eventCalendar({
+                eventsjson: '{% static 'json/calendar.json' %}',
+                jsonDateFormat: 'human',
+                startWeekOnMonday: true,
+                openEventInNewWindow: true,
+                dateFormat: 'YYYY-MM-DD',
+                showDescription: false,
+                locales: {
+                    locale: "ru",
+                    txt_noEvents: "No scheduled events",
+                    txt_SpecificEvents_prev: "",
+                    txt_SpecificEvents_after: "events:",
+                    txt_NextEvents: "Next events:",
+                    txt_GoToEventUrl: "See more",
+                    moment: {
+                        "months": ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"],
+                        "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "June",
+                            "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                        "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                            "Friday", "Saturday"],
+                        "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri",
+                            "Sat"],
+                        "weekdaysMin": ["Su", "Mo", "Tu", "We", "Th", "Fr",
+                            "Sa"]
+                    }
+                }
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ item_of_element.title }}{% endblock %}
+
+{% block content %}
+
+    {% include 'include/slider.html' %}
+
+    <section class="content_block">
+        <div class="uk-container uk-container-expand">
+            <div class="uk-grid" uk-grid="">
+                <div class="uk-width-1-5@l left-side">
+                    {% include 'include/object-navbar.html' %}
+                    <h5 class="title-bg"><a class="link-to-calendar" href="{% url 'webapp:calendar' %}">ACADEMIC
+                        CALENDAR</a></h5>
+                    <div class="uk-margin">
+                        <div class="eventCalendar" style="width: 100%; margin: 0px auto;"></div>
+                    </div>
+                </div>
+                <div class="uk-width-expand@l border-l-box">
+                    <div class="uk-padding uk-padding-remove-top">
+                        <h1 class="uk-text-center">{{ item_of_element.title }}</h1>
+                        {{ item_of_element.description|safe }}
+
+                        <ul class="accordion-text" uk-accordion="">
+                            {% for item in item_of_element.for_under_page.all %}
+                                <li class="uk-accordion-title">
+                                    <a class="uk-accordion-title" href="#">{{ item.title }}</a>
+                                    <div class="uk-accordion-content">
+                                        {% for i in item.files_of_accordion.all %}
+                                            {% if i.image %}
+                                                <img src="{{ i.image.url }}" alt="">
+                                            {% elif i.file %}
+                                                <br>
+                                                <a href="{{ i.file.url }}">{{ i.file }}</a>
+                                            {% endif %}
+                                            <p>{{ i.short_desc }}</p>
+                                        {% endfor %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% if item_of_element.files %}
+                            {{ item_of_element.short_description_of_files }}
+                            <br>
+                            <a href="{{ item_of_element.files.url }}">{{ item_of_element.files }}</a>
+                        {% endif %}
+                        {% if item_of_element.iframe_of_youtube %}
+                            {{ item_of_element.iframe_of_youtube|safe }}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="uk-width-1-5@l border-l-box-padding-remove">
+                    {% include 'include/last-news.html' %}
+                    {% include 'include/our-partners.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script>
+        var EventCalendar = $('.eventCalendar');
+
+        if (EventCalendar.length) {
+            EventCalendar.eventCalendar({
+                eventsjson: '{% static 'json/calendar.json' %}',
+                jsonDateFormat: 'human',
+                startWeekOnMonday: true,
+                openEventInNewWindow: true,
+                dateFormat: 'YYYY-MM-DD',
+                showDescription: false,
+                locales: {
+                    locale: "ru",
+                    txt_noEvents: "No scheduled events",
+                    txt_SpecificEvents_prev: "",
+                    txt_SpecificEvents_after: "events:",
+                    txt_NextEvents: "Next events:",
+                    txt_GoToEventUrl: "See more",
+                    moment: {
+                        "months": ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"],
+                        "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "June",
+                            "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                        "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                            "Friday", "Saturday"],
+                        "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri",
+                            "Sat"],
+                        "weekdaysMin": ["Su", "Mo", "Tu", "We", "Th", "Fr",
+                            "Sa"]
+                    }
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

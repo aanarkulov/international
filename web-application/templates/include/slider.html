@@ -1,0 +1,27 @@
+{% load staticfiles thumbnail %}
+
+<section class="half-slider">
+    <div class="uk-position-relative uk-visible-toggle uk-light"
+         uk-slideshow="animation: push;autoplay: true;autoplay-interval: 6000;pause-on-hover: false">
+        <ul class="uk-slideshow-items">
+            {% if sliders %}
+                {% for slider in sliders %}
+                    <li>
+                        <div uk-parallax="bgy: -100" style="background-image: url('{{ slider.image.url }}');" class="uk-position-cover image uk-animation-kenburns uk-animation uk-transform-origin-center-center">
+{#                            {% thumbnail slider.image "500x500" crop="center" as slider_img %}#}
+{#                                <img src="" width="{{ im.width }}" height="{{ im.height }}" alt=""#}
+{#                                     uk-cover="">#}
+{#                            {% endthumbnail %}#}
+
+                        </div>
+{#                        <div class="uk-position-center uk-position-medium uk-text-center"></div>#}
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+        <a class="arrow uk-position-center-left uk-position-small" href="#" uk-slidenav-previous=""
+           uk-slideshow-item="previous"></a>
+        <a class="arrow uk-position-center-right uk-position-small" href="#" uk-slidenav-next=""
+           uk-slideshow-item="next"></a>
+    </div>
+</section>

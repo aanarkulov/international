@@ -1,0 +1,72 @@
+{% load staticfiles %}
+<footer>
+    <div class="uk-container uk-container-large">
+        <div class="uk-grid uk-grid uk-child-width-auto" uk-grid="">
+            <div class="uk-width-expand@m uk-flex-center">
+                <div class="item">
+                    <a href="{% url 'webapp:index' %}"><img src="{% static 'img/svg/logo.svg' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="uk-width-expand@m uk-flex-center">
+                <div class="item margin">
+                    <p>Address: {{ contact.address }}</p>
+                    <p>Phone No: {{ contact.phone }}</p>
+                    <p>Fax No: {{ contact.fax }}</p>
+                    <p>e-mail: {{ contact.email }}</p>
+                    <div class="uk-margin social">
+                        <a href="{{ link.facebook }}" target="_blank">
+                            <img src="{% static 'img/svg/XMLID_835_.svg' %}" alt="">
+                        </a>
+                        <a href="{{ link.instagram }}" target="_blank">
+                            <img src="{% static 'img/svg/instagram-logo.svg' %}" alt="">
+                        </a>
+                        <a href="skype: {{ link.skype }}" target="_blank">
+                            <img src="{% static 'img/svg/skype-logo.svg' %}" alt="">
+                        </a>
+                        <a href="mailto: {{ link.mail }}">
+                            <img src="{% static 'img/svg/close-envelope.svg' %}" alt="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="uk-width-expand@m uk-flex-center">
+                <div class="item margin">
+                    <form action="{% url 'webapp:search' %}" method="get">
+                        <fieldset class="uk-fieldset">
+                            <div class="uk-margin uk-position-relative">
+                                <button class="uk-form-icon uk-form-icon-flip" uk-icon="icon: search"></button>
+                                <input type="text" class="uk-input" name="search" value="{{ request.get.search }}"
+                                       placeholder="search...">
+                            </div>
+                        </fieldset>
+                    </form>
+                    {% url 'webapp:index' as index_url %}
+                    {% url 'webapp:life_stream' as life_stream_url %}
+                    {% url 'webapp:calendar' as calendar_url %}
+                    <ul>
+                        <li class="{% if request.path == index_url %}uk-active{% endif %}">
+                            <a href="{{ index_url }}">Home</a>
+                        </li>
+                        {% if categories %}
+                            {% for category in categories %}
+                                {% if category.elements_of_category.first %}
+                                    {% url 'webapp:element' category.slug category.elements_of_category.first.slug as url %}
+                                    <li class="{% if request.path == url %}uk-active{% endif %}">
+                                        <a href="{{ url }}">{{ category.title|title }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        <li class="{% if request.path == life_stream_url %}uk-active{% endif %}">
+                            <a href="{{ life_stream_url }}">Lifestreaming</a>
+                        </li>
+                        <li class="{% if request.path == calendar_url %}uk-active{% endif %}">
+                            <a href="{{ calendar_url }}">Academic Calendar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

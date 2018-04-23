@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load staticfiles thumbnail %}
+
+{% block title %}International school of medicine{% endblock %}
+
+{% block content %}
+
+    <section class="home-slider custom-overlay">
+        <div class="uk-position-relative uk-visible-toggle uk-light"
+             uk-slideshow="animation: push;autoplay: true;autoplay-interval: 6000;pause-on-hover: false">
+            <ul class="uk-slideshow-items">
+                {% if sliders %}
+                    {% for slider in sliders %}
+                        <li>
+                            <div class="uk-position-cover image uk-animation-kenburns uk-animation-reverse uk-transform-origin-center-center">
+                                <img src="{{ slider.image.url }}" alt="" uk-cover="">
+                                <div class="uk-position-center uk-position-medium uk-text-center" style="z-index: 1;">
+                                    <div uk-slideshow-parallax="scale: 1,1,0.2">
+                                        <h2 uk-slideshow-parallax="x: 900,0,0">{{ slider.title }}</h2>
+                                        <p uk-slideshow-parallax="x: 900,0,0">{{ slider.description|safe }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+            <a class="arrow uk-position-center-left uk-position-small" href="#" uk-slidenav-previous=""
+               uk-slideshow-item="previous"></a>
+            <a class="arrow uk-position-center-right uk-position-small" href="#" uk-slidenav-next=""
+               uk-slideshow-item="next"></a>
+        </div>
+        <div class="uk-position-bottom-center">
+            <a class="anchor" href="#image_navigation" uk-scroll="" uk-icon="icon: chevron-down; ratio: 2"></a>
+        </div>
+    </section>
+
+    <section class="image_navigation" id="image_navigation">
+        <div class="uk-container">
+            <div class="uk-grid uk-grid-small uk-child-width-1-2@s" uk-grid="">
+                {% if categories %}
+                    {% for category in categories %}
+                        {% if category.elements_of_category.first %}
+                            <div>
+                                <div class="item uk-cover-container uk-inline-clip uk-transition-toggle uk-light">
+                                    <a class="uk-position-cover"
+                                       href="{% url 'webapp:element' category.slug category.elements_of_category.first.slug %}"></a>
+{#                                    {% thumbnail category.image "500x500" crop="center" as category_img %}#}
+                                        <img class="lazy" data-src="{{ category.image.url }}" alt="" uk-cover="">
+{#                                    {% endthumbnail %}#}
+                                    <canvas width="600" height="550"></canvas>
+                                    <div class="uk-position-center">
+                                        <div class="uk-transition-slide-bottom-small">
+                                            <h4 class="uk-margin-remove">{{ category.title }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div>
+                    <div class="item uk-cover-container uk-inline-clip uk-transition-toggle uk-light">
+                        <a class="uk-position-cover" href="{% url 'webapp:life_stream' %}"></a>
+                        <img class="lazy" data-src="{{ life_stream.image.url }}" alt="" uk-cover="">
+                        <canvas width="600" height="550"></canvas>
+                        <div class="uk-position-center">
+                            <div class="uk-transition-slide-bottom-small">
+                                <h4 class="uk-margin-remove">LIFESTREAMING</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

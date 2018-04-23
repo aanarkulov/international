@@ -1,0 +1,25 @@
+<div class="title-border uk-margin-medium-top">
+    <div class="partners-text-slider">
+        <div>
+            <h3>Our partners</h3>
+        </div>
+        <div>
+            <h3>Registration </h3>
+        </div>
+        <div>
+            <h3>Collaboration</h3>
+        </div>
+    </div>
+</div>
+<div class="partners-slider">
+    {% if partners %}
+        {% for partner in partners %}
+            <div>
+                <div class="item uk-cover-container uk-height-small">
+                    <a class="uk-position-cover link_to_news" href="{{ partner.link }}" target="_blank"></a>
+                    <img src="{{ partner.logo.url }}" alt="">
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

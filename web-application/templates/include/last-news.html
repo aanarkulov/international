@@ -1,0 +1,28 @@
+<div class="title-border">
+    {% url 'webapp:news' as news_url %}
+    {% if request.path != news_url %}
+        <a href="{% url 'webapp:news' %}">
+            <h3>NEWS</h3>
+        </a>
+    {% else %}
+        <h3>LAST NEWS</h3>
+    {% endif %}
+</div>
+<div class="news-slider">
+    {% if last_news %}
+        {% for i in last_news %}
+            <div>
+                <div class="item uk-cover-container">
+                    <a class="uk-position-cover link_to_news" href="{% url 'webapp:one_news' i.slug %}"></a>
+                    <img src="{{ i.image.url }}" alt="" uk-cover="">
+                    <canvas width="320" height="320"></canvas>
+                    <div class="uk-position-cover uk-overlay uk-overlay-default uk-flex uk-flex-center uk-flex-middle">
+                        <h4>{{ i.title }}</h4>
+                        <div class="uk-position-medium uk-position-bottom-center date"><span>{{ i.created }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

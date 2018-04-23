@@ -1,0 +1,27 @@
+{% load staticfiles %}
+{% url 'webapp:index' as index_url %}
+<header class="{% if request.path != index_url %}small-logo{% endif %}" style="z-index: 1;"
+        uk-sticky="top: 900; animation: uk-animation-slide-top; ">
+    <div class="uk-container uk-container-expand">
+        <nav class="uk-navbar" uk-navbar="">
+            <div class="uk-navbar-left">
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active">
+                        <a class="uk-padding-remove" href="{% url 'webapp:index' %}">
+                            <img src="{% static 'img/svg/logo.svg' %}" width="180" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="uk-navbar-right">
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active">
+                        <button class="uk-button uk-button-default" type="button" uk-toggle="target: #offcanvas-flip">
+                            <span uk-icon="icon: menu; ratio: 2;"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>

@@ -1,0 +1,132 @@
+{% url 'webapp:index' as index_url %}
+{% if request.path != index_url %}
+    <ul class="accordion uk-accordion home-page uk-margin-remove">
+        <li><a class="uk-accordion-title" href="{{ index_url }}">HOME</a></li>
+    </ul>
+{% else %}{% endif %}
+<ul class="accordion uk-margin-remove" uk-accordion="">
+
+    {% if categories %}
+        {% for category in categories %}
+            {% url 'webapp:element' category.slug element_slug as category_url %}
+            {% url 'webapp:items_of_element' category.slug element_slug slug as element_item_url %}
+            {% url 'webapp:calendar' as calendarsss %}
+            {% url 'webapp:students_cabinet' as students_cabinetsss %}
+            {% if category.slug == 'current-students' %}
+                <li class="{% if request.path == category_url %}uk-open{% elif request.path == element_item_url %}uk-open{% elif request.path == calendarsss %}uk-open{% elif request.path == students_cabinetsss %}uk-open{% endif %}">
+                    <a class="uk-accordion-title" href="">{{ category.title }}</a>
+                    <div class="uk-accordion-content">
+                        <ul class="uk-nav uk-nav-default">
+                            {% if category.elements_of_category.all %}
+                                {% for item in category.elements_of_category.all %}
+                                    {% if item.items_of_element.all %}
+                                        {% url 'webapp:element' category.slug item.slug as element_url %}
+                                        {% url 'webapp:students_cabinet' as students_cabinetss %}
+                                        {% if item.slug == 'students-resources' %}
+                                            <li class="{% if request.path == element_url %}uk-active{% elif request.path == students_cabinetss %}uk-active{% endif %}">
+                                                <ul class="accordion" uk-accordion="">
+                                                    <li class="{% if request.path == element_item_url %}uk-open{% elif request.path == students_cabinetss %}uk-open{% endif %}">
+                                                        <a class="uk-accordion-title" href="#">{{ item.title }}</a>
+                                                        <div class="uk-accordion-content uk-padding uk-padding-remove-vertical">
+                                                            <ul class="uk-nav uk-nav-default">
+                                                                {% for i in item.items_of_element.all %}
+                                                                    {% url 'webapp:items_of_element' category.slug item.slug i.slug as carrent_url %}
+                                                                    {% url 'webapp:students_cabinet' as students_cabinet_url %}
+                                                                    {% if i.slug == 'students-cabinet' %}
+                                                                        <li class="{% if request.path == students_cabinet_url %}uk-active{% else %}{% endif %}">
+                                                                            <a href="{{ students_cabinet_url }}">{{ i.title }}</a>
+                                                                        </li>
+                                                                    {% else %}
+                                                                        <li class="{% if request.path == carrent_url %}uk-active{% else %}{% endif %}">
+                                                                            <a href="{{ carrent_url }}">{{ i.title }}</a>
+                                                                        </li>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        {% else %}
+                                            <li class="{% if request.path == element_url %}uk-active{% endif %}">
+                                                <ul class="accordion" uk-accordion="">
+                                                    <li class="{% if request.path == element_item_url %}uk-open{% endif %}">
+                                                        <a class="uk-accordion-title" href="#">{{ item.title }}</a>
+                                                        <div class="uk-accordion-content uk-padding uk-padding-remove-vertical">
+                                                            <ul class="uk-nav uk-nav-default">
+                                                                {% for i in item.items_of_element.all %}
+                                                                    {% url 'webapp:items_of_element' category.slug item.slug i.slug as carrent_url %}
+                                                                    <li class="{% if request.path == carrent_url %}uk-active{% endif %}">
+                                                                        <a href="{{ carrent_url }}">{{ i.title }}</a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    {% else %}
+                                        {% url 'webapp:element' category.slug item.slug as element_url %}
+                                        {% url 'webapp:calendar' as calendarss %}
+                                        {% if item.slug == 'academic-calendar' %}
+                                            <li class="{% if request.path == calendarss %}uk-active{% endif %}">
+                                                <a href="{{ calendarss }}">{{ item.title }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="{% if request.path == element_url %}uk-active{% endif %}">
+                                                <a href="{{ element_url }}">{{ item.title }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                </li>
+            {% else %}
+                <li class="{% if request.path == category_url %}uk-open{% elif request.path == element_item_url %}uk-open{% endif %}">
+                    <a class="uk-accordion-title" href="">{{ category.title }}</a>
+                    <div class="uk-accordion-content">
+                        <ul class="uk-nav uk-nav-default">
+                            {% if category.elements_of_category.all %}
+                                {% for item in category.elements_of_category.all %}
+                                    {% if item.items_of_element.all %}
+                                        {% url 'webapp:element' category.slug item.slug as element_url %}
+                                        <li class="{% if request.path == element_url %}uk-active{% endif %}">
+                                            <ul class="accordion" uk-accordion="">
+                                                <li class="{% if request.path == element_item_url %}uk-open{% endif %}">
+                                                    <a
+                                                            class="uk-accordion-title" href="#">{{ item.title }}</a>
+                                                    <div class="uk-accordion-content uk-padding uk-padding-remove-vertical">
+                                                        <ul class="uk-nav uk-nav-default">
+                                                            {% for i in item.items_of_element.all %}
+                                                                {% url 'webapp:items_of_element' category.slug item.slug i.slug as carrent_url %}
+                                                                <li class="{% if request.path == carrent_url %}uk-active{% endif %}">
+                                                                    <a href="{{ carrent_url }}">{{ i.title }}</a>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% else %}
+                                        {% url 'webapp:element' category.slug item.slug as element_url %}
+                                        <li class="{% if request.path == element_url %}uk-active{% endif %}">
+                                            <a href="{{ element_url }}">{{ item.title }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                </li>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+    <li><a class="uk-title" href="{% url 'webapp:life_stream' %}">LIFESTREAMING</a></li>
+</ul>

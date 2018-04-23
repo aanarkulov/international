@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Lifestreaming{% endblock %}
+
+{% block content %}
+    {% if life_stream %}
+        <section class="stream">
+            {{ life_stream.iframe|safe }}
+        </section>
+    {% endif %}
+
+    <section class="content_block">
+        <div class="uk-container uk-container-expand">
+            <div class="uk-grid" uk-grid="">
+                <div class="uk-width-1-5@l left-side">
+                    {% include 'include/object-navbar.html' %}
+                    {% url 'webapp:calendar' as calendar_url %}
+                    <h5 class="title-bg"><a class="link-to-calendar" href="{% url 'webapp:calendar' %}">ACADEMIC
+                        CALENDAR</a></h5>
+                    <div class="uk-margin">
+                        <div class="eventCalendar" style="width: 100%; margin: 0px auto;"></div>
+                    </div>
+                </div>
+                <div class="uk-width-expand@l border-l-box">
+                    <div class="uk-padding uk-padding-remove-top">
+                        <div class="uk-grid uk-flex-center uk-child-width-1-6@l uk-child-width-1-3@s uk-child-width-1-4@m uk-child-width-1-2"
+                             uk-grid="">
+                            <div>
+                                <div id="clock_hou"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou2"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou3"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou4"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou5"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou6"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou7"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou8"></div>
+                            </div>
+                            <div>
+                                <div id="clock_hou9"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block js %}
+    <script>
+        var EventCalendar = $('.eventCalendar');
+
+        if (EventCalendar.length) {
+            EventCalendar.eventCalendar({
+                eventsjson: '{% static 'json/calendar.json' %}',
+                jsonDateFormat: 'human',
+                startWeekOnMonday: true,
+                openEventInNewWindow: true,
+                dateFormat: 'YYYY-MM-DD',
+                showDescription: false,
+                locales: {
+                    locale: "ru",
+                    txt_noEvents: "No scheduled events",
+                    txt_SpecificEvents_prev: "",
+                    txt_SpecificEvents_after: "events:",
+                    txt_NextEvents: "Next events:",
+                    txt_GoToEventUrl: "See more",
+                    moment: {
+                        "months": ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"],
+                        "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "June",
+                            "July", "Aug", "Sept", "Oct", "Nov", "Dec"],
+                        "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday",
+                            "Friday", "Saturday"],
+                        "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri",
+                            "Sat"],
+                        "weekdaysMin": ["Su", "Mo", "Tu", "We", "Th", "Fr",
+                            "Sa"]
+                    }
+                }
+            });
+        }
+
+    </script>
+{% endblock %}

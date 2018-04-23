@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+    {% include 'include/slider.html' %}
+
+    <section class="content_block">
+        <div class="uk-container uk-container-expand">
+            <div class="uk-grid" uk-grid="">
+                <div class="uk-width-1-5@l left-side">
+                    {% include 'include/object-navbar.html' %}
+                    {% url 'webapp:calendar' as calendar_url %}
+                    <h5 class="title-bg"><a class="link-to-calendar" href="{% url 'webapp:calendar' %}">ACADEMIC
+                        CALENDAR</a></h5>
+                    <div class="uk-margin">
+                        <div class="eventCalendar" style="width: 100%; margin: 0px auto;"></div>
+                    </div>
+                </div>
+                <div class="uk-width-expand@l border-l-box">
+                    <div class="uk-padding uk-padding-remove-top">
+                        <h1 class="uk-text-center">Search</h1>
+                        {% if elements %}
+                            {% for item in elements %}
+                                <a href="{% url 'webapp:element' item.category.slug item.slug %}">
+                                    <h2>{{ item.title }}</h2></a>
+                                <p>{{ item.description|safe }}</p>
+                            {% endfor %}
+                        {% elif items %}
+                            {% for item in items %}
+                                <a href="{% url 'webapp:items_of_element' item.element.category.slug item.element.slug item.slug %}">
+                                    <h2>{{ item.title }}</h2></a>
+                                <p>{{ item.description|safe }}</p>
+                            {% endfor %}
+                        {% elif news %}
+                            <a href="{% url 'webapp:news' news.slug %}"><h2>{{ news.title }}</h2></a>
+                            <p>{{ news.description }}</p>
+                            <br>
+                            <img src="{{ news.image.url }}">
+                        {% elif calendar %}
+                            <a href="{% url 'webapp:time' %}">{{ calendar }}</a>
+                        {% elif life_stream %}
+                            <a href="{% url 'webapp:life_stream' %}">{{ life_stream }}</a>
+                        {% else %}
+                            <p>Nothing found on your request</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="uk-width-1-5@l border-l-box-padding-remove">
+                    {% include 'include/last-news.html' %}
+                    {% include 'include/our-partners.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
